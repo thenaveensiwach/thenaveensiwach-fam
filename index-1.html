@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101828">
+<title>Pay TheNaveenSiwach</title>
+<style>
+:root{--bg:#0b1020;--card:#151d31;--text:#f7f9ff;--muted:#aab5cc;--accent:#7c5cff;--accent2:#20d3a5}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(circle at top,#25315b 0,#0b1020 52%);color:var(--text);display:grid;place-items:center;padding:22px}
+.card{width:min(100%,420px);background:rgba(21,29,49,.96);border:1px solid #34405c;border-radius:28px;padding:28px 22px;box-shadow:0 22px 70px #0008;text-align:center}
+.logo{width:76px;height:76px;margin:0 auto 14px;border-radius:24px;background:linear-gradient(135deg,var(--accent),#29b7e8);display:grid;place-items:center;font-size:29px;font-weight:900;box-shadow:0 10px 30px #7c5cff55}
+h1{font-size:25px;margin:8px 0 5px;letter-spacing:-.5px}.sub{color:var(--muted);font-size:14px;margin:0 0 23px}
+.qr-wrap{background:#fff;padding:13px;border-radius:20px;width:224px;height:224px;margin:0 auto 18px;display:grid;place-items:center}
+.qr-wrap img{width:100%;height:100%;object-fit:contain}
+.idbox{background:#0c1325;border:1px solid #303d5a;border-radius:14px;padding:13px 10px;margin:0 0 14px}
+.idlabel{font-size:11px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:5px}
+.upiid{font-size:16px;font-weight:750;overflow-wrap:anywhere}
+button,.pay{display:flex;align-items:center;justify-content:center;width:100%;border:0;border-radius:14px;padding:14px 16px;font-size:15px;font-weight:800;text-decoration:none;cursor:pointer}
+.pay{background:linear-gradient(100deg,var(--accent),#5b8cff);color:#fff;margin-bottom:10px}
+.copy{background:#26334d;color:#fff;border:1px solid #3b4968}
+.note{font-size:12px;color:var(--muted);line-height:1.5;margin:17px 3px 0}
+.foot{font-size:11px;color:#7583a1;margin-top:18px}
+@media(max-width:360px){.card{padding:23px 16px}.qr-wrap{width:200px;height:200px}h1{font-size:22px}}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="logo">TN</div>
+  <h1>TheNaveenSiwach</h1>
+  <p class="sub">Securely pay using your favourite UPI app</p>
+  <div class="qr-wrap">
+    <img id="qr" alt="UPI payment QR code">
+  </div>
+  <div class="idbox">
+    <div class="idlabel">My UPI ID</div>
+    <div class="upiid" id="upiText">thenaveensiwach@fam</div>
+  </div>
+  <a class="pay" id="payButton" href="#">↗ &nbsp; Pay via UPI App</a>
+  <button class="copy" id="copyButton" type="button">▣ &nbsp; Copy UPI ID</button>
+  <p class="note">After opening your UPI app, check the recipient name and amount before paying. Never share your UPI PIN or OTP.</p>
+  <div class="foot">Personal UPI payment page · TheNaveenSiwach</div>
+</main>
+<script>
+const upiId = "thenaveensiwach@fam";
+const payeeName = "TheNaveenSiwach";
+const upiLink = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&cu=INR`;
+document.getElementById("payButton").href = upiLink;
+const qrPayload = encodeURIComponent(upiLink);
+document.getElementById("qr").src = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${qrPayload}`;
+document.getElementById("copyButton").addEventListener("click", async () => {
+  const btn = document.getElementById("copyButton");
+  try {
+    await navigator.clipboard.writeText(upiId);
+    btn.textContent = "✓  UPI ID Copied";
+  } catch {
+    const field = document.createElement("textarea");
+    field.value = upiId; document.body.appendChild(field); field.select();
+    document.execCommand("copy"); field.remove();
+    btn.textContent = "✓  UPI ID Copied";
+  }
+  setTimeout(() => btn.textContent = "▣  Copy UPI ID", 1800);
+});
+</script>
+</body>
+</html>
